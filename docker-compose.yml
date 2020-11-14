@@ -1,0 +1,18 @@
+services:
+  db:
+    image: mariadb:10.4
+    environment:
+      MYSQL_ROOT_PASSWORD: my_secret_pw_shh
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: devuser
+      MYSQL_PASSWORD: devpass
+
+  web:
+    image: lsstdesc/docdb
+    container_name: docdb-storage
+    depends_on:
+      - db
+    ports:
+      - "8081:8080"
+    stdin_open: true
+    tty: true
