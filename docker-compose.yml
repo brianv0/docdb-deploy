@@ -1,15 +1,22 @@
 services:
   db:
-    image: mariadb:10.4
-    environment:
-      MYSQL_ROOT_PASSWORD: my_secret_pw_shh
-      MYSQL_DATABASE: test_db
-      MYSQL_USER: devuser
-      MYSQL_PASSWORD: devpass
+    image: mariadb:10.5
+    volumes:
+      - type: bind
+        source: ${DB_BIND_DIR}
+        target: /var/lib/mysql
 
   web:
+    # build: .
     image: lsstdesc/docdb
     container_name: docdb-storage
+    environment:
+      DB_NAME: ${DB_NAME}
+      DB_RWUSER: ${DB_USER}
+      DB_ROUSER: ${DB_USER}
+      DB_RWPASSWORD: ${DB_RWPASSWORD}
+      DB_ROPASSWORD: ${DB_ROPASSWORD}
+      SERVER_URL: http://localhost:8081
     depends_on:
       - db
     ports:
