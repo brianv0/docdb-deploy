@@ -19,7 +19,7 @@ RUN curl -LO https://github.com/ericvaandering/DocDB/archive/${DOCDB_VERSION}.ta
 RUN tar -xzf ${DOCDB_VERSION}.tar.gz && rm ${DOCDB_VERSION}.tar.gz && \
     mv DocDB-${DOCDB_VERSION}/* /app/. && ls -alR DocDB-${DOCDB_VERSION} && rm -rf DocDB-${DOCDB_VERSION}
 
-ADD uwsgi.ini run.sh /app
+ADD uwsgi.ini run.sh /app/
 # Overwrite non-substitutable template
 ADD ProjectGlobals.pm.template /app/DocDB/cgi/ProjectGlobals.pm.template
 
