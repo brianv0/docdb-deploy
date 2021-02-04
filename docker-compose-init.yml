@@ -1,6 +1,7 @@
 services:
   wait-for-init:
-    build: wait
+    build: 
+      context: wait
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
@@ -16,6 +17,8 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - type: bind
-        source: ${DB_BIND_DIR}
-        target: /var/lib/mysql
+      - docdb-mariadb:/var/lib/mysql
+
+volumes:
+  docdb-mariadb:
+version: '3.4'

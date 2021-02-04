@@ -1,14 +1,13 @@
+version: "3.5"
 services:
   db:
     image: mariadb:10.5
     volumes:
-      - type: bind
-        source: ${DB_BIND_DIR}
-        target: /var/lib/mysql
+      - docdb-mariadb:/var/lib/docdb
 
   web:
-    # build: .
-    image: lsstdesc/docdb
+    build: .
+    # image: lsstdesc/docdb
     container_name: docdb-storage
     environment:
       DB_NAME: ${DB_NAME}
@@ -16,10 +15,15 @@ services:
       DB_ROUSER: ${DB_USER}
       DB_RWPASSWORD: ${DB_RWPASSWORD}
       DB_ROPASSWORD: ${DB_ROPASSWORD}
-      SERVER_URL: http://localhost:8081
+      SERVER_URL: https://portal.lsst-desc.org
     depends_on:
       - db
+    volumes:
+      - /sdf/group/desc/docdb/volumes/docdb:/var/lib/docdb
     ports:
-      - "8081:8080"
-    stdin_open: true
-    tty: true
+      - "8999:8080"
+
+volumes:
+  docdb-mariadb:
+
+version: '3.4'
