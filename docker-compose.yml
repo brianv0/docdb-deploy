@@ -3,7 +3,7 @@ services:
   db:
     image: mariadb:10.5
     volumes:
-      - docdb-mariadb:/var/lib/docdb
+      - docdb-mariadb:/var/lib/mysql
 
   web:
     build: .
@@ -16,6 +16,11 @@ services:
       DB_RWPASSWORD: ${DB_RWPASSWORD}
       DB_ROPASSWORD: ${DB_ROPASSWORD}
       SERVER_URL: https://portal.lsst-desc.org
+      DOCDB_USER: ${DOCDB_USER}
+      DOCDB_USER_PASSWORD: ${DOCDB_USER_PASSWORD} 
+      DOCDB_ADMIN_USER: ${DOCDB_ADMIN_USER}
+      DOCDB_ADMIN_PASSWORD: ${DOCDB_ADMIN_PASSWORD} 
+
     depends_on:
       - db
     volumes:
@@ -25,5 +30,6 @@ services:
 
 volumes:
   docdb-mariadb:
+    external: true
 
 version: '3.4'

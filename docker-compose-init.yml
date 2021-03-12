@@ -21,4 +21,5 @@ services:
 
 volumes:
   docdb-mariadb:
+    external: true
 version: '3.4'

@@ -3,7 +3,7 @@ FROM centos:7
 RUN yum update -y && \
    yum install -y perl && \
    yum install -y epel-release && \
-   yum install -y uwsgi uwsgi-plugin-common gettext
+   yum install -y uwsgi uwsgi-plugin-common gettext httpd-tools
 
 RUN yum install -y perl-CGI perl-App-cpanminus \
     perl-DateTime perl-DateTime-Format-ICal perl-XML-Grove perl-XML-Parser perl-DBI perl-File-MimeInfo perl-XML-Simple perl-DBD-MySQL

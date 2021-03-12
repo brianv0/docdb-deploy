@@ -15,4 +15,14 @@ for f in ${files[@]}; do
   fi
 done
 
+if [[ -n ${DOCDB_ADMIN_USER} ]]; then
+  echo "Clobbering ${cgi_dir}/.htpasswd with new admin user: ${DOCDB_ADMIN_USER}"
+  htpasswd -b -c "${cgi_dir}/.htpasswd" "${DOCDB_ADMIN_USER}" "${DOCDB_ADMIN_PASSWORD}"
+fi
+
+if [[ -n ${DOCDB_USER} ]]; then
+  echo "Adding ${DOCDB_USER} to ${cgi_dir}/.htpasswd"
+  htpasswd -b "${cgi_dir}/.htpasswd" "${DOCDB_USER}" "${DOCDB_PASSWORD}"
+fi
+ 
 uwsgi --ini /app/uwsgi.ini

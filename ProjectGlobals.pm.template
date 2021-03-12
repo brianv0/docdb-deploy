@@ -50,7 +50,7 @@ $cgi_path    = "/DocDB/cgi-bin/"; # Used for cookies
 $DBWebMasterEmail = "${ADMIN_EMAIL}";
 $DBWebMasterName  = "${ADMIN_NAME}";
 
-$AuthUserFile     = "{auth_file}";
+$AuthUserFile     = "/app/DocDB/cgi/.htpasswd";
 $MailServer       = "${SMTP_HOSTNAME}";
 
 # Text customization. Leave $WelcomeMessage blank for no message on top of DB

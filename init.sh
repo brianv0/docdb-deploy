@@ -1,7 +1,11 @@
 #!/bin/bash
+export DB_USER=docuser
+export DB_NAME=docdb
+
+
 export DB_PASSWORD=$(openssl rand -base64 12)
 export DB_ROOT_PASSWORD=$(openssl rand -base64 12)
-
+docker volume create docdb-mariadb
 docker-compose -f docker-compose-init.yml up --abort-on-container-exit --exit-code-from wait-for-init
 
 echo "User is: ${DB_USER}"
