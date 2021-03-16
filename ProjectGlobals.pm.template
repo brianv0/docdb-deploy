@@ -39,8 +39,8 @@ $db_ropass     = "${DB_ROPASSWORD}";  # best just to leave the names as-is.
 
 $file_root   = "/var/lib/docdb/";
 $script_root = "/var/www/html/DocDB/cgi/";
-$web_root    = "${SERVER_URL}/DocDB/";
-$cgi_root    = "${SERVER_URL}/DocDB/cgi/";
+$web_root    = "${SERVER_URL}/DocDB";      # omit trailing '/'
+$cgi_root    = "${SERVER_URL}/DocDB/cgi/"; # keep trailing '/'
 $cgi_path    = "/DocDB/cgi/"; # Used for cookies
 #$secure_root = "${SERVER_URL}/DocDB/cgi/"; # URL for secure DocDB in non-secure version 
 #$PrivateRoot = "${SERVER_URL}/cgi/"; # URL for private DocDB in secure and public versions 
@@ -50,7 +50,7 @@ $cgi_path    = "/DocDB/cgi/"; # Used for cookies
 $DBWebMasterEmail = "${ADMIN_EMAIL}";
 $DBWebMasterName  = "${ADMIN_NAME}";
 
-$AuthUserFile     = "/var/www/DocDB/cgi/.htpasswd";
+$AuthUserFile     = "/var/www/cgi-bin/DocDB/.htpasswd";
 $MailServer       = "${SMTP_HOSTNAME}";
 
 # Text customization. Leave $WelcomeMessage blank for no message on top of DB
@@ -123,23 +123,27 @@ $ShortProject   = "${PROJECT_SHORTNAME}";    # This is the project used in the D
                                 # security groups, but "project" in .htaccess 
 
 #$EnhancedSecurity     = 0;     # Separate lists for view, modify
+
 #$SuperiorsCanModify   = 0;     # In enhanced model, a superior group can modify
                                 # a subordinate groups documents without explicit
                                 # permission
 
-#$UserValidation = "";          # || "basic" || "certificate"
+$UserValidation = "basic";          # || "basic" || "certificate"
                                 # Do we do group authorization like V5 and before
 			        # or do we allow .htaccess/.htpasswd users to map to groups (basic)
 			        # or require SSL certificates of users which map to groups (certificate)			       
+
 #$ReadOnly       = 0;           # Can be used in conjunction with individual
                                 # authorization methods to set up a group-like
                                 # area with group passwords which can view
                                 # but not change any info
+
 #$ReadOnlyAdmin  = 0;           # Allows administration from the read-only 
                                 # area. Only suggested for boot-strapping until
                                 # you have an individual selected as admin                               
 			       
 #$UseSignoffs          = 0;     # Sign-off system for document approval
+
 #$MailInstalled        = 1;     # Is the Mailer::Mail module installed?
 
 #$ContentSearch        = "cd /path/to/search/script; ./ContentSearch";    

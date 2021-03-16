@@ -25,12 +25,16 @@ if [[ -n ${DOCDB_USER} ]]; then
   htpasswd -b "${cgi_dir}/.htpasswd" "${DOCDB_USER}" "${DOCDB_PASSWORD}"
 fi
 
-# fix cgi paths in ScriptAlias config
-echo "Rewriting ScriptAlias rule in /etc/httpd/conf/httpd.conf"
-cgi_path_escaped=$(echo ${cgi_path} | sed 's/\//\\\//g')
-cgi_dir_escaped=$(echo ${cgi_dir}   | sed 's/\//\\\//g')
-sed -i.orig 's/ScriptAlias \/cgi-bin\/ "\/var\/www\/cgi-bin\/"/ScriptAlias '${cgi_path_escaped}'\/cgi\/ "'${cgi_dir_escaped}'\/"/' /etc/httpd/conf/httpd.conf
+if [[  -n ${DOCDB_ADMIN_USER} || -n ${DOCDB_USER} ]]; then
+  echo "Setting up htaccess file: ${cgi_dir}/.htaccess, ensuring override"
+  cat >> ${cgi_dir}/.htaccess <<EOF
+AuthType Basic
+AuthName "Enter ${APP_NAME} Credentials"
+AuthUserFile ${cgi_dir}/.htpasswd
+require valid-user
+EOF
+  sed -i.orig-htaccess '/Directory "\/var\/www\/cgi-bin"/,/<\/Directory>/s/AllowOverride None/AllowOverride All/' /etc/httpd/conf/httpd.conf
+fi
 
-#uwsgi --ini /var/www/uwsgi.ini
-#sendmail -bd  FIXME: later
+#sendmail -bd
 httpd -D FOREGROUND

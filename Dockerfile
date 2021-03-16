@@ -14,6 +14,7 @@ RUN cpanm CGI::Untaint File::MimeInfo Mail::Send Mail::Mailer XML::Twig HTML::Tr
 
 ENV HTML_DIR=/var/www/html
 ENV CGI_DIR=/var/www/cgi-bin
+ENV APP_NAME=DocDB
 
 WORKDIR /var/www
 RUN curl -LO https://github.com/ericvaandering/DocDB/archive/${DOCDB_VERSION}.tar.gz
@@ -26,6 +27,15 @@ ADD run.sh /
 
 # Overwrite non-substitutable template
 ADD ProjectGlobals.pm.template ${CGI_DIR}/DocDB/ProjectGlobals.pm.template
+
+# fix cgi paths in ScriptAlias config
+RUN export cgi_path_escaped="\/${APP_NAME}"; \
+    export cgi_app_escaped=$(echo "${CGI_DIR}/${APP_NAME}" | sed 's/\//\\\//g'); \
+    sed -i.orig 's/ScriptAlias \/cgi-bin\/ "\/var\/www\/cgi-bin\/"/ScriptAlias '${cgi_path_escaped}'\/cgi\/ "'${cgi_app_escaped}'\/"/' /etc/httpd/conf/httpd.conf
+
+# Removing extra /Static path
+RUN sed -i.orig 's/\/Static//' ${CGI_DIR}/${APP_NAME}/DocDBGlobals.pm
+
 
 ENV ADMIN_EMAIL=root@localhost
 ENV ADMIN_NAME=admin
