@@ -38,19 +38,19 @@ $db_ropass     = "${DB_ROPASSWORD}";  # best just to leave the names as-is.
 # Root directories and URLs
 
 $file_root   = "/var/lib/docdb/";
-$script_root = "/app/DocDB/cgi/";
+$script_root = "/var/www/html/DocDB/cgi/";
 $web_root    = "${SERVER_URL}/DocDB/";
-$cgi_root    = "${SERVER_URL}/DocDB/cgi-bin/";
-$cgi_path    = "/DocDB/cgi-bin/"; # Used for cookies
-#$secure_root = "${SERVER_URL}/DocDB/cgi-bin/"; # URL for secure DocDB in non-secure version 
-#$PrivateRoot = "${SERVER_URL}/cgi-bin/"; # URL for private DocDB in secure and public versions 
+$cgi_root    = "${SERVER_URL}/DocDB/cgi/";
+$cgi_path    = "/DocDB/cgi/"; # Used for cookies
+#$secure_root = "${SERVER_URL}/DocDB/cgi/"; # URL for secure DocDB in non-secure version 
+#$PrivateRoot = "${SERVER_URL}/cgi/"; # URL for private DocDB in secure and public versions 
 
 # Name and e-mail address of the administrators (or mailing list for admins)
 
 $DBWebMasterEmail = "${ADMIN_EMAIL}";
 $DBWebMasterName  = "${ADMIN_NAME}";
 
-$AuthUserFile     = "/app/DocDB/cgi/.htpasswd";
+$AuthUserFile     = "/var/www/DocDB/cgi/.htpasswd";
 $MailServer       = "${SMTP_HOSTNAME}";
 
 # Text customization. Leave $WelcomeMessage blank for no message on top of DB

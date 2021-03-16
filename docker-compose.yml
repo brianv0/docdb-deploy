@@ -26,7 +26,7 @@ services:
     volumes:
       - /sdf/group/desc/docdb/volumes/docdb:/var/lib/docdb
     ports:
-      - "8999:8080"
+      - "8999:80"
 
 volumes:
   docdb-mariadb:

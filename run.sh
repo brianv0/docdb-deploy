@@ -1,6 +1,6 @@
 #!/bin/bash
-
-cgi_dir=/app/DocDB/cgi
+cgi_path=/DocDB
+cgi_dir=/var/www/cgi-bin${cgi_path}
 if [[ ! -f ${cgi_dir}/ProjectGlobals.pm ]]; then
   echo "Generating ProjectGlobals.pm from environment variables"
   cat  ${cgi_dir}/ProjectGlobals.pm.template | envsubst "$(perl -e 'print "\$$_" for grep /^[_a-zA-Z]\w*$/, keys %ENV')" > ${cgi_dir}/ProjectGlobals.pm
@@ -24,5 +24,13 @@ if [[ -n ${DOCDB_USER} ]]; then
   echo "Adding ${DOCDB_USER} to ${cgi_dir}/.htpasswd"
   htpasswd -b "${cgi_dir}/.htpasswd" "${DOCDB_USER}" "${DOCDB_PASSWORD}"
 fi
- 
-uwsgi --ini /app/uwsgi.ini
+
+# fix cgi paths in ScriptAlias config
+echo "Rewriting ScriptAlias rule in /etc/httpd/conf/httpd.conf"
+cgi_path_escaped=$(echo ${cgi_path} | sed 's/\//\\\//g')
+cgi_dir_escaped=$(echo ${cgi_dir}   | sed 's/\//\\\//g')
+sed -i.orig 's/ScriptAlias \/cgi-bin\/ "\/var\/www\/cgi-bin\/"/ScriptAlias '${cgi_path_escaped}'\/cgi\/ "'${cgi_dir_escaped}'\/"/' /etc/httpd/conf/httpd.conf
+
+#uwsgi --ini /var/www/uwsgi.ini
+#sendmail -bd  FIXME: later
+httpd -D FOREGROUND
