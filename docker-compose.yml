@@ -2,6 +2,7 @@ version: "3.5"
 services:
   db:
     image: mariadb:10.5
+    restart: always
     volumes:
       - docdb-mariadb:/var/lib/mysql
 
@@ -9,6 +10,7 @@ services:
     build: .
     # image: lsstdesc/docdb
     container_name: docdb-storage
+    restart: always
     environment:
       DB_NAME: ${DB_NAME}
       DB_RWUSER: ${DB_USER}
@@ -25,6 +27,7 @@ services:
       - db
     volumes:
       - /sdf/group/desc/docdb/volumes/docdb:/var/lib/docdb
+      - /sdf/home/b/bvan/docdb-deploy/ProjectRoutines.pm:/var/www/cgi-bin/DocDB/ProjectRoutines.pm
     ports:
       - "8999:80"
 
