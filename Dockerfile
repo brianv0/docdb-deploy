@@ -23,6 +23,12 @@ RUN tar -xzf ${DOCDB_VERSION}.tar.gz && rm ${DOCDB_VERSION}.tar.gz && \
     mv DocDB-${DOCDB_VERSION}/DocDB/cgi cgi-bin/DocDB && \
     rm -rf DocDB-${DOCDB_VERSION}
 
+# Note: We don't have user namespaces and we want to modify files here on start
+RUN chmod ugo+rwx /run/httpd && \
+    chmod ugo+w cgi-bin/DocDB && \
+    chmod ugo+w /etc/httpd/conf && \
+    chmod -R ugo+rwx /var/log/httpd
+
 ADD run.sh /
 
 # Overwrite non-substitutable template
@@ -32,6 +38,9 @@ ADD ProjectGlobals.pm.template ${CGI_DIR}/DocDB/ProjectGlobals.pm.template
 RUN export cgi_path_escaped="\/${APP_NAME}"; \
     export cgi_app_escaped=$(echo "${CGI_DIR}/${APP_NAME}" | sed 's/\//\\\//g'); \
     sed -i.orig 's/ScriptAlias \/cgi-bin\/ "\/var\/www\/cgi-bin\/"/ScriptAlias '${cgi_path_escaped}'\/cgi\/ "'${cgi_app_escaped}'\/"/' /etc/httpd/conf/httpd.conf
+
+# fix so we can bind port 80
+RUN sed -i.orig2 's/Listen \(.*\)80/Listen \18080/' /etc/httpd/conf/httpd.conf
 
 # Removing extra /Static path
 RUN sed -i.orig 's/\/Static//' ${CGI_DIR}/${APP_NAME}/DocDBGlobals.pm

@@ -11,6 +11,7 @@ services:
     # image: lsstdesc/docdb
     container_name: docdb-storage
     restart: always
+    user: "${UID}:${GID}"
     environment:
       DB_NAME: ${DB_NAME}
       DB_RWUSER: ${DB_USER}
@@ -26,10 +27,10 @@ services:
     depends_on:
       - db
     volumes:
-      - /sdf/group/desc/docdb/volumes/docdb:/var/lib/docdb
+      - /var/lib/docdb:/var/lib/docdb:z
       - /sdf/home/b/bvan/docdb-deploy/ProjectRoutines.pm:/var/www/cgi-bin/DocDB/ProjectRoutines.pm
     ports:
-      - "8999:80"
+      - "8999:8080"
 
 volumes:
   docdb-mariadb:
